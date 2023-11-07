@@ -66,12 +66,8 @@ using namespace std;
 
     int Vertex::vertexNumber = 0;
 
-    // ensure a vertex doesn't link with a vertex in the same set
     void Vertex::addEdge(int toV, double w) {
-        if (set == ){ //having an issue doing this...
-            cerr << "Vertices are in the same set; cannot create edge.\n";
-        }
-        else{ edges.push_back(Edge(number,toV,w)); }   
+        edges.push_back(Edge(number,toV,w));  
     }
 
     void Vertex::showVertex() {
@@ -106,8 +102,12 @@ using namespace std;
         }
     }
 
+    // ensure a vertex doesn't link with a vertex in the same set
     void Graph::addEdge(int v1, int v2, double w) {
-        vertexArray[v1].addEdge(v2,w);
+        if (vertexArray[v1].getSet() == vertexArray[v2].getSet()) {
+           cerr << "Vertices are in the same set; cannot create edge.\n"; 
+        }
+        else{ vertexArray[v1].addEdge(v2,w); }
     }
 
     bool Graph::readUndirectedGraph(string fileName) {
