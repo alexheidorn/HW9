@@ -36,7 +36,7 @@ using namespace std;
         vector<Edge> edges;
         static int set; //keeps track of which set a Vertex belongs to
     public:
-        Vertex(string n = "", int s) { //changed ctor to require set number
+        Vertex(int s, string n = "") { //changed ctor to require set number
             number = vertexNumber++;
             name = n;
             set = s;
@@ -56,8 +56,19 @@ using namespace std;
         Graph() {}
         vector<Vertex> getVertices() { return vertexArray; }
         int getVertexNumber(string n);
-        int insertVertexName(string n);
-        int getOrInsertVertexName(string n);
+        int Graph::insertVertexName(int s, string n) { // params need to change for edited Set ctor
+            vertexArray.push_back(Vertex(s, n));
+            return (vertexArray.size() - 1);
+        }
+        int Graph::getOrInsertVertexName(int s, string n) { // ditto
+            int ni = getVertexNumber(n);
+            if (ni == -1) {
+                return insertVertexName(s, n);
+            }
+            else {
+                return ni;
+            }
+        }
         void addEdge(int v1, int v2, double w);
         bool readUndirectedGraph(string fileName);
         bool readDirectedGraph(string fileName);
@@ -87,25 +98,11 @@ using namespace std;
         return -1;
     }
 
-    int Graph::insertVertexName(string n) {
-        vertexArray.push_back(Vertex(n));
-        return (vertexArray.size() - 1);
-    }
-
-    int Graph::getOrInsertVertexName(string n) {
-        int ni = getVertexNumber(n);
-        if (ni == -1) {
-            return insertVertexName(n);
-        }
-        else {
-            return ni;
-        }
-    }
-
     // ensure a vertex doesn't link with a vertex in the same set
     void Graph::addEdge(int v1, int v2, double w) {
         if (vertexArray[v1].getSet() == vertexArray[v2].getSet()) {
-           cerr << "Vertices are in the same set; cannot create edge.\n"; 
+           cerr << "Vertices " << v1 << " and " << v2 <<
+            " are in the same set; cannot create edge.\n"; 
         }
         else{ vertexArray[v1].addEdge(v2,w); }
     }
@@ -118,8 +115,10 @@ using namespace std;
                 string v2name;
                 double val;
                 inStream >> v1name >> v2name >> val;
-                int v1 = getOrInsertVertexName(v1name);
-                int v2 = getOrInsertVertexName(v2name);
+                // we assume v1, in the first column of the txt file, is apart of set1
+                // we assume v2, in the second column of the text file, is apart of set2
+                int v1 = getOrInsertVertexName(1, v1name);
+                int v2 = getOrInsertVertexName(2, v2name);
                 addEdge(v1,v2,val);
                 addEdge(v2,v1,val);
             }
@@ -137,8 +136,10 @@ using namespace std;
                 string v2name;
                 double val;
                 inStream >> v1name >> v2name >> val;
-                int v1 = getOrInsertVertexName(v1name);
-                int v2 = getOrInsertVertexName(v2name);
+                // we assume v1, in the first column of the txt file, is apart of set1
+                // we assume v2, in the second column of the text file, is apart of set2
+                int v1 = getOrInsertVertexName(1, v1name);
+                int v2 = getOrInsertVertexName(2, v2name);
                 cout << v1 << endl;
                 cout << v2 << endl;
                 addEdge(v1,v2,val);
@@ -169,5 +170,6 @@ int main() {
     else {
         cout << "Unable to open file " << fileName << "\n";
     }
+
     return 0;
 }
