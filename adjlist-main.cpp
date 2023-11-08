@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <limits>
-#include "Graph.h"
+#include "Graph.cpp"
 using namespace std;
 
 int main() {
