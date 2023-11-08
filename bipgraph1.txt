@@ -1,0 +1,13 @@
+A B 2
+A P 3
+A O 5.5
+B N 7
+C N 3
+D M 5
+E L 5
+E K 5.7
+F K 4.4
+F I 5
+G J 4.3
+H J 4
+H I 2.8
