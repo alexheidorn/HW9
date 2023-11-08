@@ -6,8 +6,8 @@
 */
 
 #include <iostream>
+#include <string>
 #include <vector>
-#include <limits>
 #include <fstream>
 using namespace std;
 
@@ -34,7 +34,7 @@ private:
     string name;
     int number;
     vector<Edge> edges;
-    static int set; //keeps track of which set a Vertex belongs to
+    int set; //keeps track of which set a Vertex belongs to
 public:
     Vertex(int s, string n = "") { //changed ctor to require set number
         number = vertexNumber++;
@@ -69,10 +69,66 @@ public:
             return ni;
         }
     }
-    void addEdge(int v1, int v2, double w);
-    bool readUndirectedGraph(string fileName);
-    bool readDirectedGraph(string fileName);
-    void showGraph();
+    // ensure a vertex doesn't link with a vertex in the same set
+    void addEdge(int v1, int v2, double w) {
+        if (vertexArray[v1].getSet() == vertexArray[v2].getSet()) {
+            cerr << "Vertices " << v1 << " and " << v2 <<
+            " are in the same set; cannot create edge.\n"; 
+        }
+        else { vertexArray[v1].addEdge(v2,w); }
+    }
+
+    bool readUndirectedGraph(string fileName) {
+        ifstream inStream(fileName);
+        if (inStream.is_open()) {
+            while (inStream.good()) {
+                string v1name;
+                string v2name;
+                double val;
+                inStream >> v1name >> v2name >> val;
+                // we assume v1, in the first column of the txt file, is apart of set1
+                // we assume v2, in the second column of the text file, is apart of set2
+                int v1 = getOrInsertVertexName(1, v1name);
+                int v2 = getOrInsertVertexName(2, v2name);
+                addEdge(v1,v2,val);
+                addEdge(v2,v1,val);
+            }
+            return true;
+        }
+        else return false;
+    }
+    bool readDirectedGraph(string fileName) {
+        ifstream inStream(fileName);
+        if (inStream.is_open()) {
+            while (inStream.good()) {
+                string v1name;
+                string v2name;
+                double val;
+                inStream >> v1name >> v2name >> val;
+                // we assume v1, in the first column of the txt file, is apart of set1
+                // we assume v2, in the second column of the text file, is apart of set2
+                int v1 = getOrInsertVertexName(1, v1name);
+                int v2 = getOrInsertVertexName(2, v2name);
+                cout << v1 << endl;
+                cout << v2 << endl;
+                addEdge(v1,v2,val);
+            }
+            return true;
+        }
+        else
+            return false;
+    }
+    void showGraph() {
+        cout << "Graph:\n";
+        cout << "Set 1: \n";
+        for (auto v: vertexArray) {
+            if (v.getSet() == 1) { v.showVertex(); }
+        }
+        cout << "Set 2:\n";
+        for (auto v: vertexArray) {
+            if (v.getSet() == 2) { v.showVertex(); }
+        }
+    }
 };
 
 int Vertex::vertexNumber = 0;
@@ -98,64 +154,7 @@ int Graph::getVertexNumber(string n) {
     return -1;
 }
 
-// ensure a vertex doesn't link with a vertex in the same set
-void Graph::addEdge(int v1, int v2, double w) {
-    if (vertexArray[v1].getSet() == vertexArray[v2].getSet()) {
-        cerr << "Vertices " << v1 << " and " << v2 <<
-        " are in the same set; cannot create edge.\n"; 
-    }
-    else{ vertexArray[v1].addEdge(v2,w); }
-}
 
-bool Graph::readUndirectedGraph(string fileName) {
-    ifstream inStream(fileName);
-    if (inStream.is_open()) {
-        while (inStream.good()) {
-            string v1name;
-            string v2name;
-            double val;
-            inStream >> v1name >> v2name >> val;
-            // we assume v1, in the first column of the txt file, is apart of set1
-            // we assume v2, in the second column of the text file, is apart of set2
-            int v1 = getOrInsertVertexName(1, v1name);
-            int v2 = getOrInsertVertexName(2, v2name);
-            addEdge(v1,v2,val);
-            addEdge(v2,v1,val);
-        }
-        return true;
-    }
-    else
-        return false;
-}
-
-bool Graph::readDirectedGraph(string fileName) {
-    ifstream inStream(fileName);
-    if (inStream.is_open()) {
-        while (inStream.good()) {
-            string v1name;
-            string v2name;
-            double val;
-            inStream >> v1name >> v2name >> val;
-            // we assume v1, in the first column of the txt file, is apart of set1
-            // we assume v2, in the second column of the text file, is apart of set2
-            int v1 = getOrInsertVertexName(1, v1name);
-            int v2 = getOrInsertVertexName(2, v2name);
-            cout << v1 << endl;
-            cout << v2 << endl;
-            addEdge(v1,v2,val);
-        }
-        return true;
-    }
-    else
-        return false;
-}
-
-void Graph::showGraph() {
-    cout << "Graph:\n";
-    for (auto v: vertexArray) {
-        v.showVertex();
-    }
-}
 
 
 
