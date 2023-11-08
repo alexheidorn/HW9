@@ -1,10 +1,93 @@
 /*
 * Alex Heidorn
+* Teammates: 
 * Created: 11/6/23
 * CS2 HW9
 *  
 */
+/* Input (in .txt file):
+A Q 2
+A P 3
+A O 5.5
+Q P 9
+B N 7
+C N 3
+D M 5
+E L 5
+E K 5.7
+F K 4.4
+F I 5
+G J 4.3
+G P 0
+H J 4
+H I 2.8
 
+I B 5
+B H 7
+A C 4
+K R 9
+
+R S 8
+T S 3
+T R 4
+R V 7
+R W 3
+X Y 0
+R Z 109
+
+B Y 12
+B Y 9
+Y B 4
+*/
+
+/* Output:
+File with graph: bipgraph1.txt
+Vertices 1 and 2 are in the same set; cannot create edge.
+Vertices 2 and 1 are in the same set; cannot create edge.
+Vertices 4 and 16 are in the same set; cannot create edge.
+Vertices 16 and 4 are in the same set; cannot create edge.
+Vertices 0 and 6 are in the same set; cannot create edge.
+Vertices 6 and 0 are in the same set; cannot create edge.
+Vertices 11 and 17 are in the same set; cannot create edge.
+Vertices 17 and 11 are in the same set; cannot create edge.
+Vertices 17 and 18 are in the same set; cannot create edge.
+Vertices 18 and 17 are in the same set; cannot create edge.
+Vertices 17 and 20 are in the same set; cannot create edge.
+Vertices 20 and 17 are in the same set; cannot create edge.
+Vertices 17 and 21 are in the same set; cannot create edge.
+Vertices 21 and 17 are in the same set; cannot create edge.
+Vertices 17 and 24 are in the same set; cannot create edge.
+Vertices 24 and 17 are in the same set; cannot create edge.
+Graph:
+Set 1:
+A (0): 1 : 2   2 : 3   3 : 5.5
+B (4): 5 : 7   13 : 5   23 : 12   23 : 9   23 : 4
+C (6): 5 : 3   
+D (7): 8 : 5
+E (9): 10 : 5   11 : 5.7
+F (12): 11 : 4.4   13 : 5
+G (14): 15 : 4.3   2 : 0
+H (16): 15 : 4   13 : 2.8
+T (19): 18 : 3   17 : 4
+X (22): 23 : 0
+Set 2:
+Q (1): 0 : 2
+P (2): 0 : 3   14 : 0
+O (3): 0 : 5.5
+N (5): 4 : 7   6 : 3
+M (8): 7 : 5
+L (10): 9 : 5
+K (11): 9 : 5.7   12 : 4.4   
+I (13): 12 : 5   16 : 2.8   4 : 5
+J (15): 14 : 4.3   16 : 4
+R (17): 19 : 4
+S (18): 19 : 3
+V (20):
+W (21):
+Y (23): 22 : 0   4 : 12   4 : 9   4 : 4
+Z (24):
+PS C:\Users\alexh\CS2> 
+*/
 #include <iostream>
 #include <string>
 #include <vector>
@@ -34,9 +117,9 @@ private:
     string name;
     int number;
     vector<Edge> edges;
-    int set; //keeps track of which set a Vertex belongs to
+    int set; // Added from Mac's code: keeps track of which set a Vertex belongs to
 public:
-    Vertex(int s, string n = "") { //changed ctor to require set number
+    Vertex(int s, string n = "") { //Added: changed ctor to require set number
         number = vertexNumber++;
         name = n;
         set = s;
@@ -69,7 +152,8 @@ public:
             return ni;
         }
     }
-    // ensure a vertex doesn't link with a vertex in the same set
+
+    // added a check to ensure a vertex doesn't link with a vertex in the same set
     void addEdge(int v1, int v2, double w) {
         if (vertexArray[v1].getSet() == vertexArray[v2].getSet()) {
             cerr << "Vertices " << v1 << " and " << v2 <<
@@ -153,10 +237,6 @@ int Graph::getVertexNumber(string n) {
     }
     return -1;
 }
-
-
-
-
 
 int main() {
     string fileName;
