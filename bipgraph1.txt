@@ -1,6 +1,7 @@
-A B 2
+A Q 2
 A P 3
 A O 5.5
+Q P 9
 B N 7
 C N 3
 D M 5
@@ -9,5 +10,23 @@ E K 5.7
 F K 4.4
 F I 5
 G J 4.3
+G P 0
 H J 4
 H I 2.8
+
+I B 5
+B H 7
+A C 4
+K R 9
+
+R S 8
+T S 3
+T R 4
+R V 7
+R W 3
+X Y 0
+R Z 109
+
+B Y 12
+B Y 9
+Y B 4
