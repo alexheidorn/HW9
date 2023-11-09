@@ -1,6 +1,6 @@
 /*
 * Alex Heidorn
-* Teammates: 
+* Teammates: Aidan Carlson, Anna Wolf, Samuel Draeger
 * Created: 11/6/23
 * CS2 HW9
 *  
